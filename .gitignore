@@ -1,0 +1,60 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Production build output
+dist/
+build/
+out/
+
+# Environment variables & Secrets (Never commit .env!)
+.env
+.env.test
+.env.production
+.env.local
+*.pem
+
+# AI Planning Artifacts & Scratch files (Not part of assessment submission)
+implementation_plan.md
+task.md
+walkthrough.md
+scratch/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Test & Coverage reports
+coverage/
+.nyc_output/
+*.sqlite
+*.sqlite3
+*.db
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

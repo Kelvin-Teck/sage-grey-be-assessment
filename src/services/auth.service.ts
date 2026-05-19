@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { db } from '../config/database';
@@ -47,7 +48,7 @@ export class AuthService {
         trx,
       );
 
-      const token = this.generateAccessToken(user.id);
+      const token = this.generateAccessToken(user.id, user.email, user.name);
 
       return {
         user: { id: user.id, email: user.email, name: user.name },
@@ -73,7 +74,7 @@ export class AuthService {
       throw new InternalServerError('Wallet not found for user');
     }
 
-    const token = this.generateAccessToken(user.id);
+    const token = this.generateAccessToken(user.id, user.email, user.name);
 
     return {
       user: { id: user.id, email: user.email, name: user.name },
@@ -85,25 +86,33 @@ export class AuthService {
   async logout(token: string): Promise<void> {
     try {
       const decoded = jwt.decode(token) as { exp?: number } | null;
-      const expiresAt = decoded && decoded.exp ? new Date(decoded.exp * 1000) : new Date(Date.now() + 24 * 60 * 60 * 1000);
-      await this.tokenBlacklistRepository.blacklist(token, expiresAt);
+      const expiresAt = decoded?.exp
+        ? new Date(decoded.exp * 1000)
+        : new Date(Date.now() + 24 * 60 * 60 * 1000);
+      
+      const tokenHash = TokenBlacklistRepository.hashToken(token);
+
+      await this.tokenBlacklistRepository.blacklist(tokenHash, expiresAt);
+
     } catch (err) {
-      // Ignore if decoding fails
+      // Ignore decoding failures — malformed tokens can't be blacklisted
     }
   }
 
   /***************************Helper methods****************************************/
 
-  // Generate JWT token for a user
-  private generateAccessToken(userId: string): string {
-    return jwt.sign({ userId }, env.JWT_SECRET, { expiresIn: '1d' });
+
+  private generateAccessToken(userId: string, email: string, name: string): string {
+    return jwt.sign({ userId, email, name }, env.JWT_SECRET, {
+      expiresIn: env.JWT_EXPIRES_IN as any,
+    });
   }
 
-  // Hash password using bcryptjs
+
   private async hashPassword(password: string): Promise<string> {
-    return await bcrypt.hash(password, 10);
+    return await bcrypt.hash(password, env.BCRYPT_ROUNDS);
   }
-  // Compare password with hashed password
+  
   private async comparePassword(passwordPlain: string, passwordHash: string): Promise<boolean> {
     return await bcrypt.compare(passwordPlain, passwordHash);
   }

@@ -11,11 +11,6 @@ const startServer = async () => {
     await db.raw('SELECT 1');
     logger.info('Database connection established successfully.');
 
-    // Run migrations automatically on startup in development
-    if (env.NODE_ENV === 'development') {
-      await db.migrate.latest();
-      logger.info('Database migrations verified/executed.');
-    }
 
     const server = app.listen(PORT, () => {
       logger.info(`Server is running on http://localhost:${PORT}`);

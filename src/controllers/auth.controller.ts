@@ -34,7 +34,8 @@ export class AuthController {
 
   async getProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      sendSuccess(res, 200, 'User profile retrieved successfully', req.user);
+      const { id, email, name } = req.user!;
+      sendSuccess(res, 200, 'User profile retrieved successfully', { id, email, name });
     } catch (error) {
       next(error);
     }

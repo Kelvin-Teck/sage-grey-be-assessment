@@ -30,7 +30,7 @@ export class WalletController {
   async fund(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { amount } = req.body;
-      const result = await this.walletService.fund(req.user!.id, amount);
+      const result = await this.walletService.fund(req.user!.id, amount, req.idempotencyKey);
       sendSuccess(res, 200, 'Account funded successfully', result);
     } catch (error) {
       next(error);
@@ -40,7 +40,7 @@ export class WalletController {
   async withdraw(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { amount } = req.body;
-      const result = await this.walletService.withdraw(req.user!.id, amount);
+      const result = await this.walletService.withdraw(req.user!.id, amount, req.idempotencyKey);
       sendSuccess(res, 200, 'Funds withdrawn successfully', result);
     } catch (error) {
       next(error);
@@ -50,7 +50,7 @@ export class WalletController {
   async transfer(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { recipient, amount } = req.body;
-      const result = await this.walletService.transfer(req.user!.id, recipient, amount);
+      const result = await this.walletService.transfer(req.user!.id, recipient, amount, req.idempotencyKey);
       sendSuccess(res, 200, 'Funds transferred successfully', result);
     } catch (error) {
       next(error);

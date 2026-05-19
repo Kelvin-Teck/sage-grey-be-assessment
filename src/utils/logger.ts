@@ -14,22 +14,26 @@ const level = () => {
   return isDevelopment ? 'debug' : 'warn';
 };
 
-const colors = {
+winston.addColors({
   error: 'red',
   warn: 'yellow',
   info: 'green',
   http: 'magenta',
   debug: 'white',
-};
+});
 
-winston.addColors(colors);
-
-const format = winston.format.combine(
+// L3: colourised format only in development — ANSI codes break JSON log aggregators
+const devFormat = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
   winston.format.colorize({ all: true }),
   winston.format.printf(
     (info) => `[${info.timestamp}] ${info.level}: ${info.message}`,
   ),
+);
+
+const prodFormat = winston.format.combine(
+  winston.format.timestamp(),
+  winston.format.json(),
 );
 
 const transports = [
@@ -39,6 +43,6 @@ const transports = [
 export const logger = winston.createLogger({
   level: level(),
   levels,
-  format,
+  format: env.NODE_ENV === 'production' ? prodFormat : devFormat,
   transports,
 });

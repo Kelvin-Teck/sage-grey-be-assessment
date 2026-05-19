@@ -6,14 +6,29 @@ import routes from './routes';
 import { errorHandler } from './middlewares/error.middleware';
 import { globalLimiter } from './middlewares/rate-limiter.middleware';
 import { sendError } from './utils/response';
+import { env } from './config/env';
 
 const app = express();
 
 // Security and utility middlewares
 app.use(helmet());
-app.use(cors());
-app.use(express.json());
-app.use(morgan('dev'));
+
+const allowedOrigins = env.ALLOWED_ORIGINS.split(',').map((o) => o.trim());
+app.use(
+  cors({
+    origin: env.NODE_ENV === 'production' ? allowedOrigins : '*',
+    credentials: true,
+  }),
+);
+
+app.use(express.json({ limit: '10kb' }));
+
+if (env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined'));
+}
+
 app.use(globalLimiter);
 
 // API Routes

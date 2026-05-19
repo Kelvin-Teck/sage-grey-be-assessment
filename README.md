@@ -69,11 +69,6 @@ A secure, ACID-compliant RESTful API built for Sage Grey featuring user onboardi
    DATABASE_NAME=sage_grey_wallet
    ```
 
-   > **Production recommendations**
-   > - Set `JWT_EXPIRES_IN=15m` and implement a refresh token strategy.
-   > - Set `BCRYPT_ROUNDS=12` or higher (benchmark for your server).
-   > - Set `ALLOWED_ORIGINS` to your actual frontend domain(s).
-
 3. Run Database Migrations:
 
    ```bash

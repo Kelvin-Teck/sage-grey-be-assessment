@@ -26,7 +26,7 @@ erDiagram
     WALLETS ||--o{ TRANSACTIONS : has
     USERS {
         uuid id PK
-        string email UK
+        string email "unique"
         string name
         string password
         timestamp created_at
@@ -45,7 +45,7 @@ erDiagram
         uuid wallet_id FK
         string type "deposit | withdrawal | transfer_in | transfer_out"
         decimal amount
-        string reference UK
+        string reference "unique"
         string description
         uuid recipient_wallet_id FK
         string status "pending | completed | failed"
@@ -53,12 +53,12 @@ erDiagram
     }
     TOKEN_BLACKLIST {
         string token_hash PK "SHA-256 hash of raw JWT"
-        timestamp expires_at IDX
+        timestamp expires_at "indexed"
         timestamp created_at
     }
     IDEMPOTENCY_KEYS {
         string key PK "scoped: userId:METHOD:path:rawKey"
-        string user_id IDX
+        string user_id "indexed"
         string request_path
         text response_body
         integer response_status

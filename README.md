@@ -41,13 +41,25 @@ A secure, ACID-compliant RESTful API built for Sage Grey featuring user onboardi
 
 ### Installation
 
-1. Clone the repository and install dependencies:
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Kelvin-Teck/sage-grey-be-assessment.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd sage-grey-be-assessment
+   ```
+
+3. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Configure environment variables. Copy `.env.example` to `.env` and fill in your values:
+4. Configure environment variables. Copy `.env.example` to `.env` and fill in your values:
 
    ```env
    PORT=3000
@@ -69,7 +81,7 @@ A secure, ACID-compliant RESTful API built for Sage Grey featuring user onboardi
    DATABASE_NAME=sage_grey_wallet
    ```
 
-3. Run Database Migrations:
+5. Run Database Migrations:
 
    ```bash
    npm run migrate

@@ -9,7 +9,7 @@ A secure, ACID-compliant RESTful API built for Sage Grey featuring user onboardi
 | Runtime | Node.js (v18+) |
 | Language | TypeScript |
 | Framework | Express.js |
-| Query Builder | KnexJS |
+| Query Builder (ORM) | KnexJS |
 | Database | PostgreSQL (dev & production) / `pg-mem` (tests) |
 | Validation | Zod |
 | Logging | Winston |
